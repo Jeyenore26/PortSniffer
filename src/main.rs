@@ -70,7 +70,7 @@ fn scan(tx: Sender<u16>, start_port: u16, addr: IpAddr, numthreads: u16) {
 fn main() {
     let args: Vec<String> = env::args().collect();
     let program = args[0].clone();
-    let argumnnt = Argument::new(&args).unwrap_or_else(|err| {
+    let argument = Argument::new(&args).unwrap_or_else(|err| {
         if err.contains("help") {
             process::exit(0);
         } else {
@@ -78,14 +78,14 @@ fn main() {
             process::exit(0);
         }
     });
-    let threadnum = argumnnt.threads;
-    let _addr = argumnnt.ip_addr;
+    let threadnum = argument.threads;
+    let _addr = argument.ip_addr;
     let (tx, rx) = channel();
     for i in 0..threadnum {
         let tx = tx.clone();
 
         thread::spawn(move || {
-            scan(tx, i, argumnnt.ip_addr, threadnum);
+            scan(tx, i, argument.ip_addr, threadnum);
         });
     }
     let mut out = vec![];
