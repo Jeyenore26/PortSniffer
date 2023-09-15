@@ -82,14 +82,13 @@ fn main() {
     let _addr = argument.ip_addr;
     let (tx, rx) = channel();
     for i in 0..threadnum {
-        let tx = tx.clone();
+    let tx = tx.clone();
 
         thread::spawn(move || {
             scan(tx, i, argument.ip_addr, threadnum);
         });
     }
     let mut out = vec![];
-    drop(tx);
     for p in rx {
         out.push(p);
     }
